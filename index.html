@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Convite de Aniversário</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #add8e6, #ffffff); /* azul bebê para branco */
+      font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', cursive, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 1.8em;
+      color: #0a0a23;
+      margin-bottom: 20px;
+    }
+
+    .gif-container img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    }
+
+    .info {
+      margin-top: 25px;
+      font-size: 1.2em;
+      color: #333;
+    }
+
+    .info p {
+      margin: 10px 0;
+    }
+
+    a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .btn {
+      margin-top: 30px;
+      padding: 12px 24px;
+      font-size: 1.1em;
+      background-color: #00aaff;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #008ecc;
+    }
+  </style>
+</head>
+<body>
+  <h1>Venha curtir meu segundo aniversário com a gente</h1>
+
+  <div class="gif-container">
+    <img src="enzo.gif" alt="Aniversário Enzo" />
+  </div>
+
+  <div class="info">
+    <p><strong>Data:</strong> 22/02/2026</p>
+    <p><strong>Hora:</strong> 13:00</p>
+    <p><strong>Local:</strong> <a href="https://www.google.com/maps/search/rua+maciço+urucum+(chácara)" target="_blank">Rua Maciço Urucum (Chácara)</a></p>
+  </div>
+
+  <button class="btn" onclick="window.location.href='presentes.html'">Confirmar presença</button>
+</body>
+</html>
