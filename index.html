@@ -5,76 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Convite Aniversário Enzo</title>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
-  <script defer src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
-  <script defer>
-    document.addEventListener('DOMContentLoaded', async function () {
-      const params = new URLSearchParams(window.location.search);
-      const id = params.get("id");
-      if (!id) return;
-
-      const firebaseConfig = {
-        apiKey: "AIzaSyC2kkLknVLVFMDjt6Y9GHHsSETmIUlKIJ8",
-        authDomain: "convite-enzo.firebaseapp.com",
-        projectId: "convite-enzo",
-        storageBucket: "convite-enzo.firebasestorage.app",
-        messagingSenderId: "691596027378",
-        appId: "1:691596027378:web:4df49f8920398e0eab776b"
-      };
-
-      firebase.initializeApp(firebaseConfig);
-      const db = firebase.firestore();
-
-      const statusEl = document.getElementById("status");
-      const listaEl = document.getElementById("presentes");
-      const nomeEl = document.getElementById("nome-convidado");
-
-      const convidadoRef = db.collection("convidados").doc(id);
-      const convidadoSnap = await convidadoRef.get();
-
-      if (!convidadoSnap.exists) {
-        statusEl.innerText = "Convidado não encontrado.";
-        return;
-      }
-
-      const convidado = convidadoSnap.data();
-      nomeEl.innerText = `Olá, ${convidado.nome}`;
-      if (convidado.confirmado) {
-        statusEl.innerText = "Presença já confirmada. Obrigado!";
-      }
-
-      const presentesSnap = await db.collection("presentes").get();
-      presentesSnap.forEach(async (docSnap) => {
-        const presente = docSnap.data();
-        const li = document.createElement("li");
-        li.textContent = presente.nome + (presente.tamanho ? ` (Tam: ${presente.tamanho})` : "");
-        li.style.padding = "10px";
-        li.style.margin = "10px 0";
-        li.style.background = presente.escolhido && convidado.presente !== presente.nome ? "#ccc" : "#e0f7fa";
-        li.style.borderRadius = "6px";
-        li.style.cursor = presente.escolhido && convidado.presente !== presente.nome ? "not-allowed" : "pointer";
-        li.style.pointerEvents = presente.escolhido && convidado.presente !== presente.nome ? "none" : "auto";
-
-        if (!presente.escolhido || convidado.presente === presente.nome) {
-          li.onclick = async () => {
-            await convidadoRef.update({ confirmado: true, presente: presente.nome });
-            await db.collection("presentes").doc(docSnap.id).update({ escolhido: true });
-            statusEl.innerText = "Presença confirmada! Obrigado.";
-            li.style.background = "#ccc";
-            li.style.pointerEvents = "none";
-          };
-        }
-
-        listaEl.appendChild(li);
-      });
-    });
-  </script>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
-      overflow: auto;
+      overflow: hidden;
       background-color: #add8e6;
       font-family: 'Fredoka One', cursive;
     }
@@ -91,7 +27,7 @@
       height: 100%;
       object-fit: cover;
       object-position: 15% center;
-      filter: brightness(1.1);
+      filter: brightness(1.2);
     }
 
     .texto-sobreposto {
@@ -142,29 +78,30 @@
       background-color: #005fa3;
     }
 
-    #confirmacao {
-      padding: 20px;
-      max-width: 500px;
-      margin: 20px auto;
-      background: rgba(255,255,255,0.8);
-      border-radius: 12px;
-    }
-    #presentes li {
-      list-style: none;
-    }
-    #status {
-      color: green;
-      margin-bottom: 10px;
+    @media (max-height: 700px) {
+      .texto-sobreposto {
+        font-size: 1.1rem;
+        top: 2%;
+      }
+      .info {
+        font-size: 1rem;
+      }
+      .botao {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <img src="enzo.gif" alt="Aniversariante" class="bg-image" />
+    
     <div class="texto-sobreposto">
       Você está convidado para a festa do Enzo!<br />
       Vamos comemorar juntos o 2º aninho!
     </div>
+
     <div class="info">
       📅 <strong>22/02/26</strong> às <strong>13:00h</strong><br />
       📍 Rua Maciço Urucum (chácara)<br />
@@ -172,16 +109,10 @@
         Consultar no mapa
       </a>
     </div>
-    <button class="botao" onclick="document.getElementById('confirmacao').scrollIntoView({ behavior: 'smooth' })">
+
+    <button class="botao" onclick="window.location.href='confirmacao.html'">
       Confirmar Presença
     </button>
-  </div>
-
-  <!-- PARTE 2: CONFIRMAÇÃO E PRESENTES -->
-  <div id="confirmacao">
-    <h2 id="nome-convidado">Carregando convidado...</h2>
-    <div id="status"></div>
-    <ul id="presentes"></ul>
   </div>
 </body>
 </html>
