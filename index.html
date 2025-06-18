@@ -3,22 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Convite - Enzo</title>
+  <title>Convite Aniversário Enzo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
-
-    * {
+    body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-    }
-
-    body, html {
-      height: 100%;
-      width: 100%;
-      font-family: 'Comic Neue', cursive;
-      color: #0070f3;
-      text-shadow: 2px 2px 4px black;
+      font-family: 'Fredoka One', cursive;
+      background-color: #ffffff;
+      color: #0070cc;
+      text-align: center;
       overflow: hidden;
       position: relative;
     }
@@ -26,80 +20,99 @@
     .container {
       position: relative;
       width: 100%;
-      height: 100%;
+      height: 100vh;
     }
 
-    .background {
+    .bg-image {
       width: 100%;
-      height: 100%;
+      height: 100vh;
       object-fit: cover;
+      filter: brightness(1.15); /* Clareia a imagem */
     }
 
-    .overlay {
+    .texto-sobreposto {
       position: absolute;
-      top: 0;
-      left: 0;
       width: 100%;
-      height: 100%;
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      align-items: center;
-      background: rgba(0, 0, 0, 0.3);
+      top: 5%;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #0070cc;
+      text-shadow: 2px 2px 4px black;
+      font-size: 1.3rem;
     }
 
     .info {
-      text-align: center;
-      font-size: 1.2em;
-      margin-bottom: 10px;
+      position: absolute;
+      bottom: 22%;
+      width: 100%;
+      font-size: 1.1rem;
+      color: #0070cc;
+      text-shadow: 2px 2px 4px black;
+      padding: 0 10px;
     }
 
-    .btn {
-      background-color: #0070f3;
+    .map-link {
+      color: #0070cc;
+      text-decoration: underline;
+    }
+
+    .botao {
+      position: absolute;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #0070cc;
       color: white;
+      padding: 12px 24px;
+      font-size: 1rem;
       border: none;
-      padding: 10px 20px;
-      font-size: 1.2em;
-      border-radius: 8px;
-      cursor: pointer;
+      border-radius: 12px;
       box-shadow: 2px 2px 6px black;
-      transition: transform 0.2s ease;
-      text-decoration: none;
+      cursor: pointer;
     }
 
-    .btn:hover {
-      transform: scale(1.05);
+    .botao:hover {
+      background-color: #005fa3;
     }
 
     @media (max-height: 700px) {
-      .info {
-        font-size: 1em;
+      .texto-sobreposto {
+        font-size: 1.1rem;
+        top: 2%;
       }
-
-      .btn {
-        padding: 8px 16px;
-        font-size: 1em;
+      .info {
+        font-size: 1rem;
+      }
+      .botao {
+        padding: 10px 20px;
+        font-size: 0.9rem;
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <img src="enzo.gif" alt="Enzo Aniversário" class="background" />
-    <div class="overlay">
-      <div class="info">
-        <p>Você está convidado para o aniversário do Enzo!</p>
-        <p>Data: 22/02/26 às 13:00h</p>
-        <p>
-          Local: <a href="https://www.google.com/maps/search/?api=1&query=Rua+Maciço+Urucum" target="_blank" style="color: #00f; text-decoration: underline;">Rua Maciço Urucum (chácara)</a>
-        </p>
-      </div>
-      <a href="confirmar.html" class="btn">Confirmar Presença</a>
+    <img src="enzo.gif" alt="Aniversariante" class="bg-image" />
+    
+    <div class="texto-sobreposto">
+      Você está convidado para a festa do Enzo!<br />
+      Vamos comemorar juntos o 2º aninho!
     </div>
+
+    <div class="info">
+      📅 <strong>22/02/26</strong> às <strong>13:00h</strong><br />
+      📍 <a href="https://www.google.com/maps/search/?api=1&query=Rua+Maciço+Urucum" target="_blank" class="map-link">
+        Rua Maciço Urucum (chácara)
+      </a>
+    </div>
+
+    <button class="botao" onclick="window.location.href='confirmacao.html'">
+      Confirmar Presença
+    </button>
   </div>
 </body>
 </html>
+
 
 
 
