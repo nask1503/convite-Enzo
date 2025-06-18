@@ -23,6 +23,7 @@
       const db = firebase.firestore();
 
       const nomeEl = document.getElementById("nome-convidado");
+      const filhosEl = document.getElementById("nomes-filhos");
       const statusEl = document.getElementById("status");
       const listaEl = document.getElementById("presentes");
 
@@ -40,6 +41,10 @@
 
       const convidado = snap.data();
       nomeEl.textContent = `Olá, ${convidado.nome}!`;
+      if (convidado.filhos) {
+        filhosEl.textContent = `Convidados também: ${convidado.filhos}`;
+      }
+
       if (convidado.confirmado) {
         statusEl.textContent = "Presença já confirmada. Obrigado!";
       }
@@ -74,11 +79,22 @@
     body {
       margin: 0;
       font-family: 'Fredoka One', cursive;
-      background: url('poderoso.png') no-repeat center center fixed;
+      background: linear-gradient(to bottom, #add8e6, #ffffff) fixed;
       background-size: cover;
       color: #004080;
       text-align: center;
       padding: 20px;
+    }
+    .fundo-fixo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      background: url('poderoso.png') no-repeat center center;
+      background-size: cover;
+      opacity: 0.2;
     }
     #confirmacao {
       background: rgba(255,255,255,0.85);
@@ -101,8 +117,10 @@
   </style>
 </head>
 <body>
+  <div class="fundo-fixo"></div>
   <div id="confirmacao">
     <h2 id="nome-convidado">Carregando...</h2>
+    <p id="nomes-filhos"></p>
     <div id="status"></div>
     <ul id="presentes"></ul>
   </div>
