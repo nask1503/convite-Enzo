@@ -6,29 +6,28 @@
   <title>Convite Aniversário Enzo</title>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
   <style>
-    body {
+    html, body {
       margin: 0;
       padding: 0;
+      height: 100%;
+      overflow: hidden; /* Impede rolagem */
+      background-color: #add8e6; /* Fundo azul bebê */
       font-family: 'Fredoka One', cursive;
-      background-color: #ffffff;
-      color: #0070cc;
-      text-align: center;
-      overflow: hidden;
-      position: relative;
     }
 
     .container {
       position: relative;
       width: 100%;
-      min-height: 100dvh; /* Corrigido para telas móveis */
+      height: 100dvh;
+      overflow: hidden;
     }
 
     .bg-image {
       width: 100%;
-      min-height: 100dvh; /* Corrigido */
+      height: 100%;
       object-fit: cover;
-      filter: brightness(1.1); /* Clareia a imagem */
-      object-position: 0% center-left; /* Move imagem 0% à esquerda */
+      object-position: 15% center; /* Desloca levemente à esquerda */
+      filter: brightness(1.2);
     }
 
     .texto-sobreposto {
@@ -40,6 +39,7 @@
       color: #0070cc;
       text-shadow: 2px 2px 4px black;
       font-size: 1.3rem;
+      text-align: center;
     }
 
     .info {
@@ -49,7 +49,7 @@
       font-size: 1.1rem;
       color: #0070cc;
       text-shadow: 2px 2px 4px black;
-      padding: 0 10px;
+      text-align: center;
     }
 
     .map-link {
@@ -94,7 +94,7 @@
 <body>
   <div class="container">
     <img src="enzo.gif" alt="Aniversariante" class="bg-image" />
-
+    
     <div class="texto-sobreposto">
       Você está convidado para a festa do Enzo!<br />
       Vamos comemorar juntos o 2º aninho!
@@ -113,6 +113,7 @@
   </div>
 </body>
 </html>
+
 
 
 
