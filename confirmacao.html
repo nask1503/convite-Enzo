@@ -42,8 +42,8 @@
 
       const convidado = snap.data();
       nomeEl.textContent = `Olá, ${convidado.nome}!`;
-      if (convidado.filhos) {
-        filhosEl.textContent = `Convidados também: ${convidado.filhos}`;
+      if (convidado.criancas || convidado.filhos) {
+        filhosEl.textContent = `Convidados também: ${convidado.criancas || convidado.filhos}`;
       }
 
       const presentesSnap = await db.collection("presentes").get();
@@ -61,10 +61,18 @@
         li.style.margin = "10px 0";
         li.style.padding = "10px";
         li.style.borderRadius = "8px";
-        li.style.background = presente.escolhido && convidado.presente !== presente.nome ? "#ccc" : "#e0f7fa";
+        li.style.border = "2px solid #00aa00";
+        li.style.background = "transparent";
+        li.style.color = "#004080";
         li.style.pointerEvents = (presente.escolhido && convidado.presente !== presente.nome) || jaConfirmou ? "none" : "auto";
         li.style.cursor = (presente.escolhido && convidado.presente !== presente.nome) || jaConfirmou ? "not-allowed" : "pointer";
-        li.style.opacity = (presente.escolhido && convidado.presente !== presente.nome) || jaConfirmou ? "0.6" : "1";
+        li.style.opacity = (presente.escolhido && convidado.presente !== presente.nome) ? "0.3" : "1";
+
+        if (convidado.presente === presente.nome) {
+          li.style.opacity = "0.6";
+          li.style.fontWeight = "bold";
+          li.style.background = "#ffffff88";
+        }
 
         if (!presente.escolhido && !jaConfirmou) {
           li.onclick = async () => {
@@ -73,13 +81,14 @@
             await db.collection("presentes").doc(docSnap.id).update({ escolhido: true });
             statusEl.textContent = "Presença confirmada! Obrigado por escolher o presente.";
             finalMsg.style.display = "block";
-            li.style.background = "#ccc";
-            li.style.pointerEvents = "none";
+            li.style.opacity = "0.6";
+            li.style.fontWeight = "bold";
+            li.style.background = "#ffffff88";
             const todosLi = document.querySelectorAll("#presentes li");
             todosLi.forEach(outro => {
-              outro.style.pointerEvents = "none";
-              outro.style.opacity = "0.5";
-              outro.style.cursor = "not-allowed";
+              if (outro !== li) {
+                outro.remove();
+              }
             });
           };
         }
@@ -125,16 +134,18 @@
     }
     li {
       font-size: 1rem;
+      transition: 0.3s ease;
     }
     #status {
       margin-top: 10px;
       color: green;
     }
     #mensagem-final {
-      margin-top: 20px;
-      font-size: 1.2rem;
-      color: #0070cc;
+      margin-top: 30px;
+      font-size: 1.4rem;
+      color: #008000;
       display: none;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
     }
   </style>
 </head>
