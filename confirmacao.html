@@ -43,7 +43,7 @@
       const convidado = snap.data();
       nomeEl.textContent = `Olá, ${convidado.nome}!`;
       if (convidado.criancas || convidado.filhos) {
-        filhosEl.textContent = `Convidados também: ${convidado.criancas || convidado.filhos}`;
+        filhosEl.textContent = `crianças: ${convidado.criancas || convidado.filhos}`;
       }
 
       const presentesSnap = await db.collection("presentes").get();
