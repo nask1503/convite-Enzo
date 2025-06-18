@@ -9,10 +9,12 @@
     html, body {
       margin: 0;
       padding: 0;
-      height: 100%;
-      overflow: hidden; /* Impede rolagem */
-      background-color: #add8e6; /* Fundo azul bebê */
       font-family: 'Fredoka One', cursive;
+      background-color: #add8e6; /* Azul bebê */
+      color: #0070cc;
+      text-align: center;
+      overflow: hidden;
+      height: 100%;
     }
 
     .container {
@@ -23,11 +25,14 @@
     }
 
     .bg-image {
-      width: 100%;
+      position: absolute;
+      top: 0;
+      left: -15%; /* Move 15% para a esquerda */
+      width: 130%;
       height: 100%;
       object-fit: cover;
-      object-position: 15% center; /* Desloca levemente à esquerda */
-      filter: brightness(1.2);
+      filter: brightness(1.25);
+      z-index: -1;
     }
 
     .texto-sobreposto {
@@ -38,34 +43,38 @@
       transform: translateX(-50%);
       color: #0070cc;
       text-shadow: 2px 2px 4px black;
-      font-size: 1.3rem;
-      text-align: center;
+      font-size: 1.6rem;
     }
 
     .info {
       position: absolute;
       bottom: 22%;
       width: 100%;
-      font-size: 1.1rem;
+      font-size: 1.4rem;
       color: #0070cc;
       text-shadow: 2px 2px 4px black;
-      text-align: center;
+      padding: 0 10px;
+      line-height: 1.6;
     }
 
     .map-link {
-      color: #0070cc;
+      display: block;
+      font-size: 1rem;
+      color: #ffffff;
+      text-shadow: 1px 1px 3px black;
       text-decoration: underline;
+      margin-top: 4px;
     }
 
     .botao {
       position: absolute;
-      bottom: 10%;
+      bottom: 8%;
       left: 50%;
       transform: translateX(-50%);
       background-color: #0070cc;
       color: white;
       padding: 12px 24px;
-      font-size: 1rem;
+      font-size: 1.2rem;
       border: none;
       border-radius: 12px;
       box-shadow: 2px 2px 6px black;
@@ -78,15 +87,15 @@
 
     @media (max-height: 700px) {
       .texto-sobreposto {
-        font-size: 1.1rem;
-        top: 2%;
+        font-size: 1.4rem;
+        top: 3%;
       }
       .info {
-        font-size: 1rem;
+        font-size: 1.2rem;
       }
       .botao {
+        font-size: 1rem;
         padding: 10px 20px;
-        font-size: 0.9rem;
       }
     }
   </style>
@@ -102,9 +111,8 @@
 
     <div class="info">
       📅 <strong>22/02/26</strong> às <strong>13:00h</strong><br />
-      📍 <a href="https://www.google.com/maps/search/?api=1&query=Rua+Maciço+Urucum" target="_blank" class="map-link">
-        Rua Maciço Urucum (chácara)
-      </a>
+      📍 Rua Maciço Urucum (chácara)<br />
+      <a href="https://www.google.com/maps/search/?api=1&query=Rua+Maciço+Urucum" target="_blank" class="map-link">Consulte no mapa</a>
     </div>
 
     <button class="botao" onclick="window.location.href='confirmacao.html'">
@@ -113,13 +121,3 @@
   </div>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
