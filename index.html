@@ -12,12 +12,13 @@
       font-family: 'Fredoka One', cursive;
       color: #0047ab;
       text-shadow: 2px 2px 4px #00000055;
+      background-color: #000; /* ajuda a preencher laterais em telas grandes */
     }
 
     .container {
       position: relative;
       width: 100vw;
-      height: 100vh;
+      height: 90vh; /* diminuído aqui */
       overflow: hidden;
     }
 
@@ -25,6 +26,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
     }
 
     .text-overlay {
@@ -47,6 +49,25 @@
       margin: 4px 0;
     }
 
+    .confirm-button {
+      display: block;
+      margin: 20px auto 40px auto;
+      padding: 12px 24px;
+      background-color: #0047ab;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-size: 1.1em;
+      cursor: pointer;
+      font-family: 'Fredoka One', cursive;
+      box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s ease;
+    }
+
+    .confirm-button:hover {
+      transform: scale(1.05);
+    }
+
     @media (max-width: 480px) {
       .text-overlay h1 {
         font-size: 1.8em;
@@ -54,6 +75,11 @@
 
       .text-overlay p {
         font-size: 1em;
+      }
+
+      .confirm-button {
+        font-size: 1em;
+        padding: 10px 20px;
       }
     }
   </style>
@@ -68,8 +94,14 @@
       <p>📍 Rua das Flores, 123 - Salão Encantado</p>
     </div>
   </div>
+
+  <!-- Botão de confirmação -->
+  <button class="confirm-button" onclick="window.location.href='confirmar.html'">
+    Confirmar Presença
+  </button>
 </body>
 </html>
+
 
 
 
