@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Confirmação de Presença</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, updateDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC2kkLknVLVFMDjt6Y9GHHsSETmIUlKIJ8",
+      authDomain: "convite-enzo.firebaseapp.com",
+      projectId: "convite-enzo",
+      storageBucket: "convite-enzo.firebasestorage.app",
+      messagingSenderId: "691596027378",
+      appId: "1:691596027378:web:4df49f8920398e0eab776b"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    const nomeEl = document.getElementById("nome");
+    const listaEl = document.getElementById("presentes");
+    const statusEl = document.getElementById("status");
+
+    let convidadoDoc;
+
+    async function carregarConvidado() {
+      if (!id) {
+        nomeEl.textContent = "Convidado não identificado.";
+        return;
+      }
+
+      const ref = doc(db, "convidados", id);
+      const snap = await getDoc(ref);
+      if (snap.exists()) {
+        convidadoDoc = ref;
+        const dados = snap.data();
+        nomeEl.textContent = dados.nome;
+
+        if (dados.confirmado) {
+          statusEl.innerHTML = "<strong>Presença já confirmada!</strong> Obrigado.";
+        }
+
+        carregarPresentes(dados.presente);
+      } else {
+        nomeEl.textContent = "Convidado não encontrado.";
+      }
+    }
+
+    async function carregarPresentes(presenteEscolhido) {
+      const col = collection(db, "presentes");
+      const snap = await getDocs(col);
+      listaEl.innerHTML = "";
+
+      snap.forEach(docSnap => {
+        const presente = docSnap.data();
+        const li = document.createElement("li");
+        li.textContent = presente.nome + (presente.tamanho ? ` (Tam: ${presente.tamanho})` : "");
+        li.style.margin = "10px";
+        li.style.cursor = "pointer";
+        li.style.padding = "10px";
+        li.style.border = "1px solid #ccc";
+        li.style.borderRadius = "8px";
+        li.style.backgroundColor = presente.escolhido && presenteEscolhido !== presente.nome ? "#ccc" : "#e0f7fa";
+        li.style.pointerEvents = presente.escolhido && presenteEscolhido !== presente.nome ? "none" : "auto";
+
+        if (!presente.escolhido || presenteEscolhido === presente.nome) {
+          li.onclick = async () => {
+            await updateDoc(doc(db, "convidados", id), {
+              confirmado: true,
+              presente: presente.nome
+            });
+            await updateDoc(doc(db, "presentes", docSnap.id), {
+              escolhido: true
+            });
+            statusEl.innerHTML = "<strong>Presença confirmada!</strong> Obrigado por escolher o presente.";
+            carregarPresentes(presente.nome);
+          };
+        }
+
+        listaEl.appendChild(li);
+      });
+    }
+
+    carregarConvidado();
+  </script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Fredoka One', cursive;
+      background: url('poderoso.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #004080;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-top: 40px;
+      font-size: 1.6rem;
+      text-shadow: 2px 2px 4px white;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+
+    #status {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="nome">Carregando...</h1>
+  <div id="status"></div>
+  <ul id="presentes"></ul>
+</body>
+</html>
