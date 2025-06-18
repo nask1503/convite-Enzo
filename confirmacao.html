@@ -1,93 +1,74 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Confirmação de Presença</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirmar Presença - Enzo</title>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-    import { getFirestore, doc, getDoc, updateDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+  <script defer src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+  <script defer>
+    document.addEventListener('DOMContentLoaded', async function () {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("id");
+      const firebaseConfig = {
+        apiKey: "AIzaSyC2kkLknVLVFMDjt6Y9GHHsSETmIUlKIJ8",
+        authDomain: "convite-enzo.firebaseapp.com",
+        projectId: "convite-enzo",
+        storageBucket: "convite-enzo.firebasestorage.app",
+        messagingSenderId: "691596027378",
+        appId: "1:691596027378:web:4df49f8920398e0eab776b"
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyC2kkLknVLVFMDjt6Y9GHHsSETmIUlKIJ8",
-      authDomain: "convite-enzo.firebaseapp.com",
-      projectId: "convite-enzo",
-      storageBucket: "convite-enzo.firebasestorage.app",
-      messagingSenderId: "691596027378",
-      appId: "1:691596027378:web:4df49f8920398e0eab776b"
-    };
+      const nomeEl = document.getElementById("nome-convidado");
+      const statusEl = document.getElementById("status");
+      const listaEl = document.getElementById("presentes");
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
-    const nomeEl = document.getElementById("nome");
-    const listaEl = document.getElementById("presentes");
-    const statusEl = document.getElementById("status");
-
-    let convidadoDoc;
-
-    async function carregarConvidado() {
       if (!id) {
         nomeEl.textContent = "Convidado não identificado.";
         return;
       }
 
-      const ref = doc(db, "convidados", id);
-      const snap = await getDoc(ref);
-      if (snap.exists()) {
-        convidadoDoc = ref;
-        const dados = snap.data();
-        nomeEl.textContent = dados.nome;
-
-        if (dados.confirmado) {
-          statusEl.innerHTML = "<strong>Presença já confirmada!</strong> Obrigado.";
-        }
-
-        carregarPresentes(dados.presente);
-      } else {
+      const ref = db.collection("convidados").doc(id);
+      const snap = await ref.get();
+      if (!snap.exists) {
         nomeEl.textContent = "Convidado não encontrado.";
+        return;
       }
-    }
 
-    async function carregarPresentes(presenteEscolhido) {
-      const col = collection(db, "presentes");
-      const snap = await getDocs(col);
-      listaEl.innerHTML = "";
+      const convidado = snap.data();
+      nomeEl.textContent = `Olá, ${convidado.nome}!`;
+      if (convidado.confirmado) {
+        statusEl.textContent = "Presença já confirmada. Obrigado!";
+      }
 
-      snap.forEach(docSnap => {
+      const presentesSnap = await db.collection("presentes").get();
+      presentesSnap.forEach(async (docSnap) => {
         const presente = docSnap.data();
         const li = document.createElement("li");
         li.textContent = presente.nome + (presente.tamanho ? ` (Tam: ${presente.tamanho})` : "");
-        li.style.margin = "10px";
-        li.style.cursor = "pointer";
+        li.style.margin = "10px 0";
         li.style.padding = "10px";
-        li.style.border = "1px solid #ccc";
         li.style.borderRadius = "8px";
-        li.style.backgroundColor = presente.escolhido && presenteEscolhido !== presente.nome ? "#ccc" : "#e0f7fa";
-        li.style.pointerEvents = presente.escolhido && presenteEscolhido !== presente.nome ? "none" : "auto";
+        li.style.background = presente.escolhido && convidado.presente !== presente.nome ? "#ccc" : "#e0f7fa";
+        li.style.pointerEvents = presente.escolhido && convidado.presente !== presente.nome ? "none" : "auto";
+        li.style.cursor = "pointer";
 
-        if (!presente.escolhido || presenteEscolhido === presente.nome) {
+        if (!presente.escolhido || convidado.presente === presente.nome) {
           li.onclick = async () => {
-            await updateDoc(doc(db, "convidados", id), {
-              confirmado: true,
-              presente: presente.nome
-            });
-            await updateDoc(doc(db, "presentes", docSnap.id), {
-              escolhido: true
-            });
-            statusEl.innerHTML = "<strong>Presença confirmada!</strong> Obrigado por escolher o presente.";
-            carregarPresentes(presente.nome);
+            await ref.update({ confirmado: true, presente: presente.nome });
+            await db.collection("presentes").doc(docSnap.id).update({ escolhido: true });
+            statusEl.textContent = "Presença confirmada! Obrigado por escolher o presente.";
+            li.style.background = "#ccc";
+            li.style.pointerEvents = "none";
           };
         }
 
         listaEl.appendChild(li);
       });
-    }
-
-    carregarConvidado();
+    });
   </script>
   <style>
     body {
@@ -99,29 +80,31 @@
       text-align: center;
       padding: 20px;
     }
-
-    h1 {
-      margin-top: 40px;
-      font-size: 1.6rem;
-      text-shadow: 2px 2px 4px white;
+    #confirmacao {
+      background: rgba(255,255,255,0.85);
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 500px;
+      margin: 40px auto;
     }
-
     ul {
       list-style: none;
       padding: 0;
-      margin-top: 20px;
     }
-
+    li {
+      font-size: 1rem;
+    }
     #status {
-      margin-top: 20px;
-      font-size: 1.2rem;
+      margin-top: 10px;
       color: green;
     }
   </style>
 </head>
 <body>
-  <h1 id="nome">Carregando...</h1>
-  <div id="status"></div>
-  <ul id="presentes"></ul>
+  <div id="confirmacao">
+    <h2 id="nome-convidado">Carregando...</h2>
+    <div id="status"></div>
+    <ul id="presentes"></ul>
+  </div>
 </body>
 </html>
