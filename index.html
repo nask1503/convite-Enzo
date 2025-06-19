@@ -122,7 +122,6 @@
         const dados = docSnap.data();
         const nomes = dados.nomes.join(" e ");
         const filhos = dados.filhos?.length ? ` (${dados.filhos.join(", ")})` : "";
-        const grupoId = dados.grupo;
 
         document.getElementById("textoConvidado").innerHTML = `
           <strong>${nomes}${filhos}</strong>,<br />
@@ -132,7 +131,7 @@
 
         const botao = document.getElementById("confirmarPresenca");
         botao.onclick = () => {
-          window.location.href = `confirmacao.html?id=${grupoId}`;
+          window.location.href = `confirmacao.html?id=${id}`;
         };
 
       } catch (e) {
