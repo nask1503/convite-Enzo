@@ -50,8 +50,20 @@
       const acesso = snapAcesso.data();
       const grupoId = acesso.grupo;
 
-      const ref = db.collection("convidados").doc(grupoId);
-      const snap = await ref.get();
+      const acessoRef = db.collection("acessos").doc(id);
+const acessoSnap = await acessoRef.get();
+
+if (!acessoSnap.exists) {
+  nomeEl.textContent = "Convidado não reconhecido. Link inválido.";
+  return;
+}
+
+const acesso = acessoSnap.data();
+const grupoId = acesso.grupo;
+
+const ref = db.collection("convidados").doc(grupoId);
+const snap = await ref.get();
+
 
       if (!snap.exists) {
         nomeEl.textContent = "Convidado não reconhecido.";
