@@ -75,9 +75,8 @@
 <body>
   <div class="container">
     <img src="enzo.gif" alt="Aniversariante" class="bg-image" />
-    <div class="texto-sobreposto">
-      Você está convidado para a festa do Enzo!<br />
-      Vamos comemorar juntos o 2º aninho!
+    <div class="texto-sobreposto" id="textoConvidado">
+      Carregando dados do convite...
     </div>
     <div class="info">
       📅 <strong>22/02/26</strong> às <strong>13:00h</strong><br />
@@ -100,57 +99,49 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    window.addEventListener("DOMContentLoaded", () => {
+    async function carregarDados() {
       const params = new URLSearchParams(window.location.search);
       const id = params.get("id");
 
-      async function carregarDados() {
-        if (!id) {
-          alert("Acesso inválido. Volte e insira seu código.");
-          window.location.href = "entrada.html";
-          return;
-        }
+      if (!id) {
+        alert("Acesso inválido. Volte e insira seu código.");
+        window.location.href = "entrada.html";
+        return;
+      }
 
-        const acessoRef = db.collection("acessos").doc(id);
-        const acessoSnap = await acessoRef.get();
+      try {
+        const docRef = db.collection("convidados").doc(id);
+        const docSnap = await docRef.get();
 
-        if (!acessoSnap.exists) {
+        if (!docSnap.exists) {
           alert("Código inválido. Verifique com os pais do Enzo.");
           window.location.href = "entrada.html";
           return;
         }
 
-        const acesso = acessoSnap.data();
-        const grupoId = acesso.grupo;
+        const dados = docSnap.data();
+        const nomes = dados.nomes.join(" e ");
+        const filhos = dados.filhos?.length ? ` (${dados.filhos.join(", ")})` : "";
+        const grupoId = dados.grupo;
 
-        const grupoRef = db.collection("convidados").doc(grupoId);
-        const grupoSnap = await grupoRef.get();
+        document.getElementById("textoConvidado").innerHTML = `
+          <strong>${nomes}${filhos}</strong>,<br />
+          você está convidado(a) para a festa do Enzo!<br />
+          Vamos comemorar juntos o 2º aninho!
+        `;
 
-        if (grupoSnap.exists) {
-          const grupo = grupoSnap.data();
-          const nomes = grupo.nomes.join(" e ");
-          const filhos = grupo.filhos?.length ? ` (${grupo.filhos.join(", ")})` : "";
+        const botao = document.getElementById("confirmarPresenca");
+        botao.onclick = () => {
+          window.location.href = `confirmacao.html?id=${grupoId}`;
+        };
 
-          const textoDiv = document.querySelector(".texto-sobreposto");
-          textoDiv.innerHTML = `
-            <strong>${nomes}${filhos}</strong>,<br />
-            você está convidado(a) para a festa do Enzo!<br />
-            Vamos comemorar juntos o 2º aninho!
-          `;
-
-          const botao = document.getElementById("confirmarPresenca");
-          if (botao) {
-            botao.addEventListener("click", () => {
-              window.location.href = `confirmacao.html?id=${grupoId}`;
-            });
-          }
-        } else {
-          alert("Grupo não encontrado.");
-        }
+      } catch (e) {
+        console.error("Erro ao carregar dados:", e);
+        alert("Erro ao carregar convite. Tente novamente.");
       }
+    }
 
-      carregarDados();
-    });
+    window.addEventListener("DOMContentLoaded", carregarDados);
   </script>
 </body>
 </html>
