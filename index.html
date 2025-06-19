@@ -110,63 +110,70 @@
       </a>
     </div>
 
-    <button class="botao" onclick="window.location.href='confirmacao.html' + window.location.search">
+       <button class="botao" id="confirmarPresenca">
       Confirmar Presença
     </button>
   </div>
- <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyC2kkLknVLVFMDjt6Y9GHHsSETmIUlKIJ8",
-    authDomain: "convite-enzo.firebaseapp.com",
-    projectId: "convite-enzo",
-  };
 
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC2kkLknVLVFMDjt6Y9GHHsSETmIUlKIJ8",
+      authDomain: "convite-enzo.firebaseapp.com",
+      projectId: "convite-enzo",
+    };
 
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-  async function carregarDados() {
-    if (!id) {
-      alert("Acesso inválido. Volte e insira seu código.");
-      window.location.href = "entrada.html";
-      return;
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    async function carregarDados() {
+      if (!id) {
+        alert("Acesso inválido. Volte e insira seu código.");
+        window.location.href = "entrada.html";
+        return;
+      }
+
+      const acessoRef = db.collection("acessos").doc(id);
+      const acessoSnap = await acessoRef.get();
+
+      if (!acessoSnap.exists) {
+        alert("Código inválido. Verifique com os pais do Enzo.");
+        window.location.href = "entrada.html";
+        return;
+      }
+
+      const acesso = acessoSnap.data();
+      const grupoId = acesso.grupo;
+
+      const grupoRef = db.collection("convidados").doc(grupoId);
+      const grupoSnap = await grupoRef.get();
+
+      if (grupoSnap.exists) {
+        const grupo = grupoSnap.data();
+        const nomes = grupo.nomes.join(" e ");
+        const filhos = grupo.filhos?.length ? ` (${grupo.filhos.join(", ")})` : "";
+
+        const textoDiv = document.querySelector(".texto-sobreposto");
+        textoDiv.innerHTML = `
+          <strong>${nomes}${filhos}</strong>,<br />
+          você está convidado(a) para a festa do Enzo!<br />
+          Vamos comemorar juntos o 2º aninho!
+        `;
+
+        // ✅ Redirecionamento corrigido aqui:
+        document.getElementById("confirmarPresenca").onclick = () => {
+          window.location.href = `confirmacao.html?id=${grupoId}`;
+        };
+      }
     }
 
-    const acessoRef = db.collection("acessos").doc(id);
-    const acessoSnap = await acessoRef.get();
-
-    if (!acessoSnap.exists) {
-      alert("Código inválido. Verifique com os pais do Enzo.");
-      window.location.href = "entrada.html";
-      return;
-    }
-
-    const acesso = acessoSnap.data();
-    const grupoId = acesso.grupo;
-
-    const grupoRef = db.collection("convidados").doc(grupoId);
-    const grupoSnap = await grupoRef.get();
-
-    if (grupoSnap.exists) {
-      const grupo = grupoSnap.data();
-      const nomes = grupo.nomes.join(" e ");
-      const filhos = grupo.filhos?.length ? ` (${grupo.filhos.join(", ")})` : "";
-
-      const textoDiv = document.querySelector(".texto-sobreposto");
-      textoDiv.innerHTML = `
-        <strong>${nomes}${filhos}</strong>,<br />
-        você está convidado(a) para a festa do Enzo!<br />
-        Vamos comemorar juntos o 2º aninho!
-      `;
-    }
-  }
-
-  carregarDados();
-</script>
-
+    carregarDados();
+  </script>
+</body>
 </html>
+
 
