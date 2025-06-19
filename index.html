@@ -155,7 +155,8 @@
           const botao = document.getElementById("confirmarPresenca");
           if (botao) {
             botao.onclick = () => {
-              window.location.href = `confirmacao.html?id=\${grupoId}`;
+             console.log("Redirecionando para:", `confirmacao.html?id=${grupoId}`);
+             window.location.href = `confirmacao.html?id=\${grupoId}`;
             };
           }
         }, 0);
