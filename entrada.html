@@ -46,7 +46,7 @@
 <body>
   <div class="container">
     <h2>Digite seu código de acesso</h2>
-    <input type="text" id="codigo" placeholder="Ex: michelle1" />
+    <input type="text" id="codigo" placeholder="Digite seu código aqui..." />
     <br />
     <button onclick="verificarCodigo()">Entrar</button>
   </div>
@@ -71,19 +71,15 @@
       }
 
       try {
-        console.log("Verificando código:", codigo);
         const docRef = db.collection("convidados").doc(codigo);
         const docSnap = await docRef.get();
-        console.log("Documento encontrado:", docSnap.exists);
 
         if (!docSnap.exists) {
           alert("Código inválido. Verifique com os pais do Enzo.");
           return;
         }
 
-        const data = docSnap.data();
-        console.log("Dados recebidos:", data);
-        const grupoId = data.grupo;
+        const grupoId = docSnap.data().grupo;
         window.location.href = `index.html?id=${codigo}`;
       } catch (erro) {
         console.error("Erro ao verificar código:", erro);
