@@ -7,10 +7,21 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f0f8ff;
+      background-image: url('poderoso.jpg');
+      background-size: cover;
+      background-position: center;
       margin: 0;
-      padding: 20px;
+      padding: 0;
+      color: #333;
       text-align: center;
+    }
+    .container {
+      background-color: rgba(255, 255, 255, 0.9);
+      margin: 0 auto;
+      padding: 20px;
+      max-width: 700px;
+      border-radius: 12px;
+      margin-top: 30px;
     }
     h1 {
       color: #0070cc;
@@ -19,31 +30,45 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 10px;
+      gap: 12px;
+      max-height: 400px;
+      overflow-y: auto;
       margin-top: 20px;
     }
     .presente {
-      background-color: #ffffff;
+      background: #ffffff;
+      padding: 10px 15px;
       border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 10px 20px;
+      border-radius: 10px;
       cursor: pointer;
-      box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+      width: 45%;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
     }
     .presente:hover {
-      background-color: #e6f0ff;
+      background-color: #e0f0ff;
     }
     .presente-selecionado {
-      background-color: #d0e8ff;
+      background-color: #0070cc;
+      color: white;
+      padding: 12px 20px;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+      width: fit-content;
+      margin: 0 auto;
+  
+      background-color: #bde2ff;
       font-weight: bold;
       pointer-events: none;
     }
   </style>
 </head>
 <body>
-  <h1>Escolha um presente para o Enzo 🎁</h1>
-  <div id="mensagem"></div>
-  <div class="presentes" id="listaPresentes"></div>
+  <div class="container">
+    <h1>Escolha um presente 🎁</h1>
+    <div id="mensagem"></div>
+    <div class="presentes" id="listaPresentes"></div>
+  </div>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -60,11 +85,19 @@
     const grupoId = urlParams.get("id");
 
     const listaPresentes = [
-      "Camiseta 2 anos", "Conjunto verão", "Conjunto moletom", "Bermuda jeans",
-      "Sandália infantil", "Tênis velcro", "Pijama manga longa", "Livro ilustrado",
-      "Blocos de montar", "Carrinho de brinquedo", "Massinha atóxica", "Quebra-cabeça madeira",
-      "Kit meias", "Cuequinhas infantis", "Calça saruel", "Shorts tactel", "Camisa polo",
-      "Regata divertida", "Blusa moletom", "Touca infantil"
+      "Camiseta básica", "Camiseta com estampa", "Regata verão", "Blusa de moletom com capuz",
+      "Camiseta polo", "Conjunto camiseta + bermuda", "Calça de moletom", "Bermuda moletom leve",
+      "Calça jeans com elástico", "Shorts de tactel", "Calça saruel", "Conjunto moletom (blusa + calça)",
+      "Conjunto regata + short", "Kit 3 meias", "Touca de algodão", "Cuequinha infantil",
+      "Casaco corta-vento", "Jaqueta jeans", "Sandália papete", "Sandália anatômica",
+      "Chinelo com elástico", "Chinelo estampa divertida", "Crocs básico", "Crocs com personagens",
+      "Botinha de meia", "Tênis com velcro", "Tênis esportivo", "Pijama meia-estação",
+      "Macacão curto", "Blocos de montar", "Carrinho de fricção", "Caminhão basculante",
+      "Bola macia", "Tapete interativo", "Jogo de formas", "Brinquedo empilhar argolas",
+      "Quebra-cabeça madeira", "Instrumentos musicais", "Livro de banho", "Animais de borracha",
+      "Carrinho de puxar", "Brinquedo oficina", "Massinha com moldes", "Mais 1 conjunto frio",
+      "Mais 1 conjunto calor", "Mais 1 calça moletom", "Mais 1 blusa manga longa",
+      "Meias coloridas", "Cuecas infantis", "Conjunto verão reserva", "Roupa extra de passeio"
     ];
 
     async function carregarPagina() {
@@ -77,11 +110,10 @@
       const grupoSnap = await grupoRef.get();
 
       if (grupoSnap.empty) {
-        document.getElementById("mensagem").innerText = "Grupo não encontrado.";
+        document.getElementById("mensagem").innerText = "Grupo de convidados não encontrado.";
         return;
       }
 
-      // Verificar se algum membro do grupo já escolheu presente
       let presenteEscolhido = null;
       let grupoDocs = [];
       grupoSnap.forEach(doc => grupoDocs.push(doc));
@@ -110,7 +142,14 @@
             for (const doc of grupoDocs) {
               await db.collection("convidados").doc(doc.id).update({ presente: p });
             }
-            lista.innerHTML = `<p><strong>Presente escolhido:</strong><br>${p}</p>`;
+            
+            lista.innerHTML = `
+              <div class="presente-selecionado">${p}</div>
+              <p style="margin-top: 20px; font-size: 1.1rem;">Obrigado por confirmar sua presença e escolher um presente para o Enzo! 💙</p>
+              <p style="margin-top: 30px; font-size: 1.3rem;"><strong>Ah!!! antes que eu esqueça!!<br>traga sua roupa de banho</strong></p>
+              <p style="font-size: 1.5rem; margin-top: 10px;"><strong>Vamos nos divertir muito!</strong></p>
+            `;
+  
           } catch (err) {
             alert("Erro ao salvar o presente. Tente novamente.");
           }
