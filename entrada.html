@@ -71,15 +71,19 @@
       }
 
       try {
+        console.log("Verificando código:", codigo);
         const docRef = db.collection("convidados").doc(codigo);
         const docSnap = await docRef.get();
+        console.log("Documento encontrado:", docSnap.exists);
 
         if (!docSnap.exists) {
           alert("Código inválido. Verifique com os pais do Enzo.");
           return;
         }
 
-        const grupoId = docSnap.data().grupo;
+        const data = docSnap.data();
+        console.log("Dados recebidos:", data);
+        const grupoId = data.grupo;
         window.location.href = `index.html?id=${codigo}`;
       } catch (erro) {
         console.error("Erro ao verificar código:", erro);
