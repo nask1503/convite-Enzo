@@ -114,5 +114,60 @@
       Confirmar Presença
     </button>
   </div>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC2kkLknVLVFMDjt6Y9GHHsSETmIUlKIJ8",
+      authDomain: "convite-enzo.firebaseapp.com",
+      projectId: "convite-enzo",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    async function carregarDados() {
+      if (!id) {
+        alert("Acesso inválido. Volte e insira seu código.");
+        window.location.href = "entrada.html";
+        return;
+      }
+
+      const acessoRef = doc(db, "acessos", id);
+      const acessoSnap = await getDoc(acessoRef);
+
+      if (!acessoSnap.exists()) {
+        alert("Código inválido. Verifique com os pais do Enzo.");
+        window.location.href = "entrada.html";
+        return;
+      }
+
+      const acesso = acessoSnap.data();
+      const grupoId = acesso.grupo;
+
+      const grupoRef = doc(db, "convidados", grupoId);
+      const grupoSnap = await getDoc(grupoRef);
+
+      if (grupoSnap.exists()) {
+        const grupo = grupoSnap.data();
+        const nomes = grupo.nomes.join(" e ");
+        const filhos = grupo.filhos?.length ? ` (${grupo.filhos.join(", ")})` : "";
+
+        const textoDiv = document.querySelector(".texto-sobreposto");
+        textoDiv.innerHTML = `
+          <strong>${nomes}${filhos}</strong>,<br />
+          você está convidado(a) para a festa do Enzo!<br />
+          Vamos comemorar juntos o 2º aninho!
+        `;
+      }
+    }
+
+    carregarDados();
+  </script>
 </body>
 </html>
+
