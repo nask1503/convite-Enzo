@@ -150,16 +150,13 @@
           Vamos comemorar juntos o 2º aninho!
         `;
 
-        // Corrigir botão após garantir que grupoId foi carregado
-        setTimeout(() => {
-          const botao = document.getElementById("confirmarPresenca");
-          if (botao) {
-            botao.onclick = () => {
-             console.log("Redirecionando para:", `confirmacao.html?id=${grupoId}`);
-             window.location.href = `confirmacao.html?id=\${grupoId}`;
-            };
-          }
-        }, 0);
+        // Correção final: botão funcionando
+        const botao = document.getElementById("confirmarPresenca");
+        if (botao) {
+          botao.addEventListener("click", () => {
+            window.location.href = `confirmacao.html?id=${grupoId}`;
+          });
+        }
       }
     }
 
