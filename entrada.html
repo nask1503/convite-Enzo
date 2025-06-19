@@ -71,6 +71,7 @@
       }
 
       try {
+        // 1️⃣ Buscar código na coleção 'acessos'
         const acessoRef = db.collection("acessos").doc(codigo);
         const acessoSnap = await acessoRef.get();
 
@@ -80,11 +81,22 @@
         }
 
         const grupoId = acessoSnap.data().grupo;
-        // Agora redireciona diretamente com o ID do grupo (não o código individual)
+
+        // 2️⃣ Buscar o grupo correspondente na coleção 'convidados'
+        const grupoRef = db.collection("convidados").doc(grupoId);
+        const grupoSnap = await grupoRef.get();
+
+        if (!grupoSnap.exists) {
+          alert("Grupo de convidados não encontrado. Tente novamente.");
+          return;
+        }
+
+        // 3️⃣ Redirecionar para a página com ID do grupo
         window.location.href = `index.html?id=${grupoId}`;
-      } catch (error) {
-        console.error("Erro ao verificar o código:", error);
-        alert("Ocorreu um erro. Tente novamente.");
+
+      } catch (erro) {
+        console.error("Erro ao verificar o código:", erro);
+        alert("Erro inesperado. Tente novamente.");
       }
     }
   </script>
