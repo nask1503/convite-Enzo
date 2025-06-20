@@ -11,10 +11,14 @@ body {
   font-family: 'Fredoka One', cursive;
   margin: 0;
   padding: 0;
-  background: linear-gradient(to bottom, #cceeff, #f9fcff);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #cceeff 0%, #f0faff 50%, #ffffff 100%);
+  background-image: url('pc.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-blend-mode: luminosity;
+  opacity: 1;
 }
 
       font-family: 'Fredoka One', cursive;
@@ -32,7 +36,7 @@ body {
       margin: 30px auto;
     }
     h1 {
-      color: #0070cc;
+      color: #0070cc; text-shadow: 2px 2px 4px black;
       text-shadow: 1px 1px 3px white;
     }
     .presentes {
@@ -55,7 +59,7 @@ body {
       background-color: #e0f0ff;
     }
     .presente-selecionado {
-      background-color: #0070cc;
+      background-color: #0070cc; text-shadow: 2px 2px 4px black;
       color: white;
       padding: 12px 20px;
       font-size: 1.1rem;
@@ -123,13 +127,13 @@ body {
 
       if (presenteEscolhido) {
         lista.innerHTML = `\n          <div class="presente-selecionado">${presenteEscolhido}</div>
-          <p style="margin-top: 20px; font-size: 1.3rem; color: #0070cc;">
+          <p style="margin-top: 20px; font-size: 1.3rem; color: #0070cc; text-shadow: 2px 2px 4px black;">
             Obrigado por confirmar sua presença e escolher um presente para o Enzo! 💙
           </p>
-          <p style="margin-top: 30px; font-size: 1.6rem; color: #0070cc;">
+          <p style="margin-top: 30px; font-size: 1.6rem; color: #0070cc; text-shadow: 2px 2px 4px black;">
             <strong>Ah!!! antes que eu esqueça!!<br>traga sua roupa de banho</strong>
           </p>
-          <p style="font-size: 1.8rem; margin-top: 10px; color: #0070cc;">
+          <p style="font-size: 1.8rem; margin-top: 10px; color: #0070cc; text-shadow: 2px 2px 4px black;">
             <strong>Vamos nos divertir muito!</strong>
           </p>
         `;
@@ -147,13 +151,13 @@ body {
 
       if (disponiveis.length === 0) {
         lista.innerHTML = `
-  <p style="margin-top: 20px; font-size: 1.3rem; color: #0070cc; text-shadow: 2px 2px 3px black;">
+  <p style="margin-top: 20px; font-size: 1.3rem; color: #0070cc; text-shadow: 2px 2px 4px black; text-shadow: 2px 2px 3px black;">
     Obrigado por confirmar sua presença e escolher um presente para o Enzo! 💙
   </p>
-  <p style="margin-top: 30px; font-size: 1.6rem; color: #0070cc; text-shadow: 2px 2px 3px black;">
+  <p style="margin-top: 30px; font-size: 1.6rem; color: #0070cc; text-shadow: 2px 2px 4px black; text-shadow: 2px 2px 3px black;">
     <strong>Ah!!! antes que eu esqueça!!<br>traga sua roupa de banho</strong>
   </p>
-  <p style="font-size: 1.8rem; margin-top: 10px; color: #0070cc; text-shadow: 2px 2px 3px black;">
+  <p style="font-size: 1.8rem; margin-top: 10px; color: #0070cc; text-shadow: 2px 2px 4px black; text-shadow: 2px 2px 3px black;">
     <strong>Vamos nos divertir muito!</strong>
   </p>
 `; return; }
@@ -167,13 +171,13 @@ body {
             await db.collection("convidados").doc(convidadoId).update({ presente: p });
             lista.innerHTML = `
               <div class="presente-selecionado">${p}</div>
-              <p style="margin-top: 20px; font-size: 1.3rem; color: #0070cc;">
+              <p style="margin-top: 20px; font-size: 1.3rem; color: #0070cc; text-shadow: 2px 2px 4px black;">
                 Obrigado por confirmar sua presença e escolher um presente para o Enzo! 💙
               </p>
-              <p style="margin-top: 30px; font-size: 1.6rem; color: #0070cc;">
+              <p style="margin-top: 30px; font-size: 1.6rem; color: #0070cc; text-shadow: 2px 2px 4px black;">
                 <strong>Ah!!! antes que eu esqueça!!<br>traga sua roupa de banho</strong>
               </p>
-              <p style="font-size: 1.8rem; margin-top: 10px; color: #0070cc;">
+              <p style="font-size: 1.8rem; margin-top: 10px; color: #0070cc; text-shadow: 2px 2px 4px black;">
                 <strong>Vamos nos divertir muito!</strong>
               </p>
             `;
