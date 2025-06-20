@@ -30,12 +30,10 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 12px;
-      max-height: 400px;
-      overflow-y: auto;
       margin-top: 20px;
     }
     .presente {
-      background: rgba(255, 255, 255, 0.85);
+      background: transparent;
       padding: 10px 15px;
       border: 1px solid #ccc;
       border-radius: 10px;
@@ -60,7 +58,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>Escolha um presente para o Enzo 🎁</h1>
+    <h1>Escolha um presente 🎁</h1>
     <div id="mensagem"></div>
     <div class="presentes" id="listaPresentes"></div>
   </div>
@@ -113,17 +111,19 @@
       const presenteEscolhido = dados.presente;
       const lista = document.getElementById("listaPresentes");
 
-      function mostrarMensagemFinal(presente) {
-        lista.innerHTML = `
-          <div class="presente-selecionado">${presente}</div>
-          <p style="margin-top: 20px; font-size: 1.1rem;">Obrigado por confirmar sua presença e escolher um presente para o Enzo! 💙</p>
-          <p style="margin-top: 30px; font-size: 1.3rem;"><strong>Ah!!! antes que eu esqueça!!<br>traga sua roupa de banho</strong></p>
-          <p style="font-size: 1.5rem; margin-top: 10px;"><strong>Vamos nos divertir muito!</strong></p>
-        `;
-      }
-
       if (presenteEscolhido) {
-        mostrarMensagemFinal(presenteEscolhido);
+        lista.innerHTML = `
+          <div class="presente-selecionado">${presenteEscolhido}</div>
+          <p style="margin-top: 20px; font-size: 1.3rem; color: #0070cc;">
+            Obrigado por confirmar sua presença e escolher um presente para o Enzo! 💙
+          </p>
+          <p style="margin-top: 30px; font-size: 1.6rem; color: #0070cc;">
+            <strong>Ah!!! antes que eu esqueça!!<br>traga sua roupa de banho</strong>
+          </p>
+          <p style="font-size: 1.8rem; margin-top: 10px; color: #0070cc;">
+            <strong>Vamos nos divertir muito!</strong>
+          </p>
+        `;
         return;
       }
 
@@ -134,7 +134,18 @@
         div.onclick = async () => {
           try {
             await db.collection("convidados").doc(convidadoId).update({ presente: p });
-            mostrarMensagemFinal(p);
+            lista.innerHTML = `
+              <div class="presente-selecionado">${p}</div>
+              <p style="margin-top: 20px; font-size: 1.3rem; color: #0070cc;">
+                Obrigado por confirmar sua presença e escolher um presente para o Enzo! 💙
+              </p>
+              <p style="margin-top: 30px; font-size: 1.6rem; color: #0070cc;">
+                <strong>Ah!!! antes que eu esqueça!!<br>traga sua roupa de banho</strong>
+              </p>
+              <p style="font-size: 1.8rem; margin-top: 10px; color: #0070cc;">
+                <strong>Vamos nos divertir muito!</strong>
+              </p>
+            `;
           } catch (err) {
             alert("Erro ao salvar o presente. Tente novamente.");
           }
