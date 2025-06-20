@@ -84,7 +84,7 @@ body::before {
 </head>
 <body style="background-image: url('poderoso.jpg'); background-size: cover; background-position: center;">
   <div class="container">
-    <h1 id="tituloPresente">Escolha um presente 🎁</h1>
+    <h1 id="tituloPresente" style="display:none;">Escolha um presente 🎁</h1>
     <div id="mensagem"></div>
     <div class="presentes" id="listaPresentes"></div>
   </div>
@@ -138,6 +138,7 @@ body::before {
       const lista = document.getElementById("listaPresentes");
 
       if (presenteEscolhido) {
+  document.getElementById('tituloPresente').style.display = 'none';
         document.getElementById("tituloPresente").style.display = "none";
           lista.innerHTML = `\n          <div class="presente-selecionado">${presenteEscolhido}</div>
           <p style="margin-top: 20px; font-size: 1.3rem; color: #0070cc; text-shadow: 2px 2px 4px black; text-align: center;">
