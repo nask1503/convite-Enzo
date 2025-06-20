@@ -4,12 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Convite do Enzo - Acesso</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
   <style>
     body {
       background-image: url('poderoso.jpg');
-      background-size: cover;
+      background-size: contain;
+      background-repeat: no-repeat;
       background-position: center;
+      background-color: #cceeff;
       font-family: 'Fredoka One', cursive;
       margin: 0;
       padding: 0;
@@ -17,17 +21,19 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
     }
+
     img {
-      width: 400px;
-      max-width: none;
+      width: 80%;
+      max-width: 400px;
       margin-bottom: 20px;
       display: block;
-  margin-left: auto;
-  margin-right: auto;
-  transform: translateX(30px); 
-}
+      margin-left: auto;
+      margin-right: auto;
+      transform: translateX(30px);
+    }
+
     input {
       padding: 14px;
       width: 260px;
@@ -37,6 +43,7 @@
       margin-bottom: 12px;
       text-align: center;
     }
+
     button {
       padding: 12px 24px;
       font-size: 1.05rem;
@@ -47,13 +54,14 @@
       cursor: pointer;
       font-family: 'Fredoka One', cursive;
     }
+
     button:hover {
       background-color: #005fa3;
     }
   </style>
 </head>
 <body>
-  <img src="ce.png" alt="Poderoso Chefinho" />
+  <img src="ce.png" alt="Poderoso Chefinho" loading="lazy" />
   <input type="text" id="codigo" placeholder="Digite seu código de acesso..." />
   <button onclick="verificarCodigo()">Entrar</button>
 
@@ -70,21 +78,17 @@
 
     async function verificarCodigo() {
       const codigo = document.getElementById("codigo").value.trim();
-
       if (!codigo) {
         alert("Por favor, digite seu código.");
         return;
       }
-
       try {
         const docRef = db.collection("convidados").doc(codigo);
         const docSnap = await docRef.get();
-
         if (!docSnap.exists) {
           alert("Código inválido. Verifique com os pais do Enzo.");
           return;
         }
-
         window.location.href = `index.html?id=${codigo}`;
       } catch (erro) {
         console.error("Erro ao verificar código:", erro);
