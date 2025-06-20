@@ -6,7 +6,6 @@
   <title>Confirmação de Presença</title>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
   <style>
-    
 body {
   font-family: 'Fredoka One', cursive;
   margin: 0;
@@ -32,59 +31,57 @@ body::before {
   opacity: 0.5;
   z-index: -1;
 }
-
-      font-family: 'Fredoka One', cursive;
-      background-image: url('poderoso.jpg');
-      background-size: cover;
-      background-position: center;
-      margin: 0;
-      padding: 0;
-      color: #333;
-      text-align: center;
-    }
-    .container {
-      padding: 20px;
-      max-width: 700px;
-      margin: 30px auto;
-    }
-    h1 {
-      color: #0070cc; text-shadow: 2px 2px 4px black; text-align: center;
-      text-shadow: 1px 1px 3px white;
-    }
-    .presentes {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 20px;
-    }
-    .presente {
-      background: transparent;
-      padding: 10px 15px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      cursor: pointer;
-      width: 45%;
-      box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
-    }
-    .presente:hover {
-      background-color: #e0f0ff;
-    }
-    .presente-selecionado {
-      background-color: #0070cc; text-shadow: 2px 2px 4px black; text-align: center;
-      color: white;
-      padding: 12px 20px;
-      font-size: 1.1rem;
-      border-radius: 10px;
-      box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-      width: fit-content;
-      margin: 0 auto;
-    }
+.container {
+  padding: 20px;
+  max-width: 700px;
+  margin: 30px auto;
+}
+h1 {
+  color: #0070cc;
+  text-shadow: 2px 2px 4px black;
+  text-align: center;
+}
+#tituloPresente {
+  font-size: 1.6rem;
+  color: #0070cc;
+  text-shadow: 2px 2px 4px black;
+  margin-bottom: 20px;
+}
+.presentes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+.presente {
+  background: transparent;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 45%;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+}
+.presente:hover {
+  background-color: #e0f0ff;
+}
+.presente-selecionado {
+  background-color: #0070cc;
+  text-shadow: 2px 2px 4px black;
+  color: white;
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+  width: fit-content;
+  margin: 0 auto;
+}
   </style>
 </head>
 <body style="background-image: url('poderoso.jpg'); background-size: cover; background-position: center;">
   <div class="container">
-    <h1 id="tituloPresente" style="display:none;">Escolha um presente 🎁</h1>
+    <div id="tituloPresente" style="display: none;">🎁 Escolha um presente para o Enzo</div>
     <div id="mensagem"></div>
     <div class="presentes" id="listaPresentes"></div>
   </div>
@@ -104,20 +101,20 @@ body::before {
     const convidadoId = urlParams.get("id");
 
     const listaPresentesOriginais = [
-      "Camiseta básica", "Camiseta com estampa", "Regata verão", "Blusa de moletom com capuz",
-      "Camiseta polo", "Conjunto camiseta + bermuda", "Calça de moletom", "Bermuda moletom leve",
-      "Calça jeans com elástico", "Shorts de tactel", "Calça saruel", "Conjunto moletom (blusa + calça)",
-      "Conjunto regata + short", "Kit 3 meias", "Touca de algodão", "Cuequinha infantil",
-      "Casaco corta-vento", "Jaqueta jeans", "Sandália papete", "Sandália anatômica",
-      "Chinelo com elástico", "Chinelo estampa divertida", "Crocs básico", "Crocs com personagens",
-      "Botinha de meia", "Tênis com velcro", "Tênis esportivo", "Pijama meia-estação",
-      "Macacão curto", "Blocos de montar", "Carrinho de fricção", "Caminhão basculante",
-      "Bola macia", "Tapete interativo", "Jogo de formas", "Brinquedo empilhar argolas",
-      "Quebra-cabeça madeira", "Instrumentos musicais", "Livro de banho", "Animais de borracha",
-      "Carrinho de puxar", "Brinquedo oficina", "Massinha com moldes", "Mais 1 conjunto frio",
-      "Mais 1 conjunto calor", "Mais 1 calça moletom", "Mais 1 blusa manga longa",
-      "Meias coloridas", "Cuecas infantis", "Conjunto verão reserva", "Roupa extra de passeio"
-    ];
+      "Animais de borracha", "Bermuda moletom leve", "Blocos de montar", "Bola macia",
+      "Botinha de meia", "Brinquedo empilhar argolas", "Brinquedo oficina", "Calça de moletom",
+      "Calça jeans com elástico", "Calça saruel", "Caminhão basculante", "Camiseta básica",
+      "Camiseta com estampa", "Camiseta polo", "Carrinho de fricção", "Carrinho de puxar",
+      "Casaco corta-vento", "Chinelo com elástico", "Chinelo estampa divertida",
+      "Conjunto camiseta + bermuda", "Conjunto moletom (blusa + calça)", "Conjunto regata + short",
+      "Conjunto verão reserva", "Crocs básico", "Crocs com personagens", "Cuecas infantis",
+      "Cuequinha infantil", "Instrumentos musicais", "Jaqueta jeans", "Jogo de formas",
+      "Kit 3 meias", "Livro de banho", "Macacão curto", "Mais 1 blusa manga longa",
+      "Mais 1 calça moletom", "Mais 1 conjunto calor", "Mais 1 conjunto frio",
+      "Massinha com moldes", "Meias coloridas", "Pijama meia-estação", "Quebra-cabeça madeira",
+      "Regata verão", "Roupa extra de passeio", "Sandália anatômica", "Sandália papete",
+      "Shorts de tactel", "Tapete interativo", "Tênis com velcro", "Tênis esportivo", "Touca de algodão"
+    ].sort();
 
     async function carregarPagina() {
       if (!convidadoId) {
@@ -138,43 +135,48 @@ body::before {
       const lista = document.getElementById("listaPresentes");
 
       if (presenteEscolhido) {
-  document.getElementById('tituloPresente').style.display = 'none';
         document.getElementById("tituloPresente").style.display = "none";
-          lista.innerHTML = `\n          <div class="presente-selecionado">${presenteEscolhido}</div>
-          <p style="margin-top: 20px; font-size: 1.3rem; color: #0070cc; text-shadow: 2px 2px 4px black; text-align: center;">
+        lista.innerHTML = `
+          <div class="presente-selecionado">${presenteEscolhido}</div>
+          <p style="margin-top: 20px; font-size: 1.3rem; color: #0070cc; text-shadow: 2px 2px 4px black;">
             Obrigado por confirmar sua presença e escolher um presente para o Enzo! 💙
           </p>
-          <p style="margin-top: 30px; font-size: 1.6rem; color: #0070cc; text-shadow: 2px 2px 4px black; text-align: center;">
+          <p style="margin-top: 30px; font-size: 1.6rem; color: #0070cc; text-shadow: 2px 2px 4px black;">
             <strong>Ah!!! antes que eu esqueça!!<br>traga sua roupa de banho</strong>
           </p>
-          <p style="font-size: 1.8rem; margin-top: 10px; color: #0070cc; text-shadow: 2px 2px 4px black; text-align: center;">
+          <p style="font-size: 1.8rem; margin-top: 10px; color: #0070cc; text-shadow: 2px 2px 4px black;">
             <strong>Vamos nos divertir muito!</strong>
           </p>
         `;
         return;
       }
 
-      
       const snapshot = await db.collection("convidados").get();
       const usados = [];
       snapshot.forEach(doc => {
         const d = doc.data();
         if (d.presente) usados.push(d.presente);
       });
+
       const disponiveis = listaPresentesOriginais.filter(p => !usados.includes(p));
 
       if (disponiveis.length === 0) {
+        document.getElementById("tituloPresente").style.display = "none";
         lista.innerHTML = `
-  <p style="margin-top: 20px; font-size: 1.3rem; color: #0070cc; text-shadow: 2px 2px 4px black; text-align: center; text-shadow: 2px 2px 3px black;">
-    Obrigado por confirmar sua presença e escolher um presente para o Enzo! 💙
-  </p>
-  <p style="margin-top: 30px; font-size: 1.6rem; color: #0070cc; text-shadow: 2px 2px 4px black; text-align: center; text-shadow: 2px 2px 3px black;">
-    <strong>Ah!!! antes que eu esqueça!!<br>traga sua roupa de banho</strong>
-  </p>
-  <p style="font-size: 1.8rem; margin-top: 10px; color: #0070cc; text-shadow: 2px 2px 4px black; text-align: center; text-shadow: 2px 2px 3px black;">
-    <strong>Vamos nos divertir muito!</strong>
-  </p>
-`; return; }
+          <p style="margin-top: 20px; font-size: 1.3rem; color: #0070cc; text-shadow: 2px 2px 4px black;">
+            Obrigado por confirmar sua presença e escolher um presente para o Enzo! 💙
+          </p>
+          <p style="margin-top: 30px; font-size: 1.6rem; color: #0070cc; text-shadow: 2px 2px 4px black;">
+            <strong>Ah!!! antes que eu esqueça!!<br>traga sua roupa de banho</strong>
+          </p>
+          <p style="font-size: 1.8rem; margin-top: 10px; color: #0070cc; text-shadow: 2px 2px 4px black;">
+            <strong>Vamos nos divertir muito!</strong>
+          </p>
+        `;
+        return;
+      }
+
+      document.getElementById("tituloPresente").style.display = "block";
 
       disponiveis.forEach(p => {
         const div = document.createElement("div");
@@ -183,15 +185,16 @@ body::before {
         div.onclick = async () => {
           try {
             await db.collection("convidados").doc(convidadoId).update({ presente: p });
+            document.getElementById("tituloPresente").style.display = "none";
             lista.innerHTML = `
               <div class="presente-selecionado">${p}</div>
-              <p style="margin-top: 20px; font-size: 1.3rem; color: #0070cc; text-shadow: 2px 2px 4px black; text-align: center;">
+              <p style="margin-top: 20px; font-size: 1.3rem; color: #0070cc; text-shadow: 2px 2px 4px black;">
                 Obrigado por confirmar sua presença e escolher um presente para o Enzo! 💙
               </p>
-              <p style="margin-top: 30px; font-size: 1.6rem; color: #0070cc; text-shadow: 2px 2px 4px black; text-align: center;">
+              <p style="margin-top: 30px; font-size: 1.6rem; color: #0070cc; text-shadow: 2px 2px 4px black;">
                 <strong>Ah!!! antes que eu esqueça!!<br>traga sua roupa de banho</strong>
               </p>
-              <p style="font-size: 1.8rem; margin-top: 10px; color: #0070cc; text-shadow: 2px 2px 4px black; text-align: center;">
+              <p style="font-size: 1.8rem; margin-top: 10px; color: #0070cc; text-shadow: 2px 2px 4px black;">
                 <strong>Vamos nos divertir muito!</strong>
               </p>
             `;
