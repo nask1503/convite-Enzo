@@ -6,7 +6,17 @@
   <title>Confirmação de Presença</title>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
   <style>
-    body {
+    
+body {
+  font-family: 'Fredoka One', cursive;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom, #cceeff, #f9fcff);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
       font-family: 'Fredoka One', cursive;
       background-image: url('poderoso.jpg');
       background-size: cover;
@@ -56,7 +66,7 @@
     }
   </style>
 </head>
-<body style="background-image: url('poderoso.jpg'); background-size: cover; background-position: center;">
+<body style="">
   <div class="container">
     <h1>Escolha um presente 🎁</h1>
     <div id="mensagem"></div>
@@ -77,7 +87,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const convidadoId = urlParams.get("id");
 
-    const listaPresentes = [
+    const listaPresentesOriginais = [
       "Camiseta básica", "Camiseta com estampa", "Regata verão", "Blusa de moletom com capuz",
       "Camiseta polo", "Conjunto camiseta + bermuda", "Calça de moletom", "Bermuda moletom leve",
       "Calça jeans com elástico", "Shorts de tactel", "Calça saruel", "Conjunto moletom (blusa + calça)",
@@ -112,8 +122,7 @@
       const lista = document.getElementById("listaPresentes");
 
       if (presenteEscolhido) {
-        lista.innerHTML = `
-          <div class="presente-selecionado">${presenteEscolhido}</div>
+        lista.innerHTML = `\n          <div class="presente-selecionado">${presenteEscolhido}</div>
           <p style="margin-top: 20px; font-size: 1.3rem; color: #0070cc;">
             Obrigado por confirmar sua presença e escolher um presente para o Enzo! 💙
           </p>
@@ -127,7 +136,29 @@
         return;
       }
 
-      listaPresentes.forEach(p => {
+      
+      const snapshot = await db.collection("convidados").get();
+      const usados = [];
+      snapshot.forEach(doc => {
+        const d = doc.data();
+        if (d.presente) usados.push(d.presente);
+      });
+      const disponiveis = listaPresentesOriginais.filter(p => !usados.includes(p));
+
+      if (disponiveis.length === 0) {
+        lista.innerHTML = `
+  <p style="margin-top: 20px; font-size: 1.3rem; color: #0070cc; text-shadow: 2px 2px 3px black;">
+    Obrigado por confirmar sua presença e escolher um presente para o Enzo! 💙
+  </p>
+  <p style="margin-top: 30px; font-size: 1.6rem; color: #0070cc; text-shadow: 2px 2px 3px black;">
+    <strong>Ah!!! antes que eu esqueça!!<br>traga sua roupa de banho</strong>
+  </p>
+  <p style="font-size: 1.8rem; margin-top: 10px; color: #0070cc; text-shadow: 2px 2px 3px black;">
+    <strong>Vamos nos divertir muito!</strong>
+  </p>
+`; return; }
+
+      disponiveis.forEach(p => {
         const div = document.createElement("div");
         div.className = "presente";
         div.innerText = p;
