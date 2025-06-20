@@ -21,10 +21,13 @@
       overflow: hidden;
     }
     .bg-image {
+    max-height: 100vh;
+    width: auto;
+
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      object-position: 15% center;
+      object-fit: contain; max-width: 100%; max-height: 100%;
+      object-position: left center;
       filter: brightness(1.2);
     }
     .texto-sobreposto {
@@ -120,17 +123,34 @@
         }
 
         const dados = docSnap.data();
-        const nomes = dados.nomes.join(" e ");
+        const nomesArray = dados.nomes;
+        const nomes = nomesArray.join(" e ");
         const filhos = dados.filhos?.length ? ` (${dados.filhos.join(", ")})` : "";
+
+        let saudacao = "";
+        if (nomesArray.length === 1) {
+          const nome = nomesArray[0].toLowerCase();
+          saudacao = nome.endsWith("a") ? "você está convidada" : "você está convidado";
+        } else {
+          const femininos = nomesArray.filter(n => n.trim().toLowerCase().endsWith("a")).length;
+          const masculinos = nomesArray.length - femininos;
+
+          if (masculinos > 0 && femininos > 0) {
+            saudacao = "vocês estão convidados";
+          } else if (femininos === nomesArray.length) {
+            saudacao = "vocês estão convidadas";
+          } else {
+            saudacao = "vocês estão convidados";
+          }
+        }
 
         document.getElementById("textoConvidado").innerHTML = `
           <strong>${nomes}${filhos}</strong>,<br />
-          você está convidado(a) para a festa do Enzo!<br />
+          ${saudacao} para a festa do Enzo!<br />
           Vamos comemorar juntos o 2º aninho!
         `;
 
-        const botao = document.getElementById("confirmarPresenca");
-        botao.onclick = () => {
+        document.getElementById("confirmarPresenca").onclick = () => {
           window.location.href = `confirmacao.html?id=${id}`;
         };
 
